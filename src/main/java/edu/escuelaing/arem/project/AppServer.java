@@ -45,9 +45,9 @@ public class AppServer {
 	public static void listen() throws IOException {
 		ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(8080);
+            serverSocket = new ServerSocket(80);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 8080.");
+            System.err.println("Could not listen on port: 80.");
             System.exit(1);
         }
         while(true){
