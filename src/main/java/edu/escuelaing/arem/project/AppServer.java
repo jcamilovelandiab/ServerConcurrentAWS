@@ -45,9 +45,9 @@ public class AppServer {
 	public static void listen() throws IOException {
 		ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(35000);
+            serverSocket = new ServerSocket(8080);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 35000.");
+            System.err.println("Could not listen on port: 8080.");
             System.exit(1);
         }
         while(true){
@@ -75,7 +75,7 @@ public class AppServer {
                 	out.println("HTTP/2.0 200 OK");
                     out.println("Content-Type: text/html");
                     out.println("\r\n");
-                    System.err.println("What: " + resource);
+                    //System.err.println("What: " + resource);
                     out.println(listUrl.get(resource).process());
                 	
                 }else if(inputLine.contains("resources")) {
@@ -86,10 +86,7 @@ public class AppServer {
 	                		begin--;
 	                	}
 	                	urlInputLine = inputLine.substring(begin+1,end+5);
-	                	
-	                    //System.err.println("BEGIN: "+begin+" - END: "+end);
 	                    String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\html\\" + urlInputLine;
-	                    System.err.println("DIRECTORY SERVER: "+urlDirectoryServer);
 	                    try {
 	                        BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
 	                        out.println("HTTP/2.0 200 OK");
@@ -116,7 +113,7 @@ public class AppServer {
 	                        out.println("\r\n");
 	                        ImageIO.write(img, "jpg",clientSocket.getOutputStream());
 	                	}catch(Exception e) {
-	                		System.err.println("I CANT READ "+inputLine);
+	                		//System.err.println("I CANT READ "+inputLine);
 	                	}
 	                }
                 }
