@@ -45,16 +45,17 @@ public class AppServer {
 	}
 	
 	public static void listen() throws IOException {
-		
+		serverSocket = null;
+		int port = getPort();
+        try {
+            serverSocket = new ServerSocket(port);
+            System.err.println("Listening on port: "+port+".");
+        } catch (IOException e) {
+            System.err.println("Could not listen on port: "+port+".");
+            System.exit(1);
+        }
+ 
         while(true){
-        	serverSocket = null;
-    		int port = getPort();
-            try {
-                serverSocket = new ServerSocket(port);
-            } catch (IOException e) {
-                System.err.println("Could not listen on port: "+port+".");
-                System.exit(1);
-            }
         	
             clientSocket = null;
             try {
@@ -70,15 +71,18 @@ public class AppServer {
             String inputLine;
             
             while ((inputLine = in.readLine()) != null) {
-                if(inputLine.contains("/apps/")) {
-                	sendAPP(inputLine, out);
-                }else if(inputLine.contains("/resources/")) {
-	                if (inputLine.contains(".html")) {
-	                	sendHTML(inputLine, out);
-	                }else if(inputLine.contains(".jpg")){
-	                	sendJPG(inputLine, clientSocket, out);
-	                }
-                }
+            	//System.err.println("INPUTLINE:["+inputLine +"]");
+            	if(inputLine.contains("HTTP")) {
+            		if(inputLine.contains("/apps/")) {
+                    	sendAPP(inputLine, out);
+                    }else if(inputLine.contains("/resources/")) {
+    	                if (inputLine.contains(".html")) {
+    	                	sendHTML(inputLine, out);
+    	                }else if(inputLine.contains(".jpg")){
+    	                	sendJPG(inputLine, clientSocket, out);
+    	                }
+                    }
+            	}
                 if (!in.ready()) {
                     break;
                 }
@@ -93,7 +97,7 @@ public class AppServer {
 	public static void sendAPP(String inputLine, PrintWriter out) {
 		int begin = inputLine.indexOf("/apps/");
     	int end = inputLine.indexOf("HTTP")-1;
-    	
+    	System.err.println("BEGIN: "+begin+" , END: "+end);
     	String resource = inputLine.substring(begin, end);
     	out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");
@@ -148,7 +152,7 @@ public class AppServer {
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
         }
-        return 35000; //returns default port if heroku-port isn't set (i.e. on localhost)
+        return 4567; //returns default port if heroku-port isn't set (i.e. on localhost)
     }
 
 }
