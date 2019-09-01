@@ -49,7 +49,7 @@ public class AppServer {
 	public static void listen() throws IOException {
 		
         while(true){
-        	ServerSocket serverSocket = null;
+        	serverSocket = null;
     		int port = getPort();
             try {
                 serverSocket = new ServerSocket(port);
@@ -58,7 +58,7 @@ public class AppServer {
                 System.exit(1);
             }
         	
-            Socket clientSocket = null;
+            clientSocket = null;
             try {
                 System.out.println("Ready to receive ...");
                 clientSocket = serverSocket.accept();
