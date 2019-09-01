@@ -22,6 +22,9 @@ import edu.escuelaing.arem.project.notation.Web;
 public class AppServer {
 
 	private static HashMap<String, Handler> listUrl = new HashMap<String, Handler>();
+	private static Socket clientSocket = null;
+	private static ServerSocket serverSocket = null;
+	
 	
 	public static void init() throws IOException {
 		try {
@@ -44,15 +47,17 @@ public class AppServer {
 	}
 	
 	public static void listen() throws IOException {
-		ServerSocket serverSocket = null;
-		int port = getPort();
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: "+port+".");
-            System.exit(1);
-        }
+		
         while(true){
+        	ServerSocket serverSocket = null;
+    		int port = getPort();
+            try {
+                serverSocket = new ServerSocket(port);
+            } catch (IOException e) {
+                System.err.println("Could not listen on port: "+port+".");
+                System.exit(1);
+            }
+        	
             Socket clientSocket = null;
             try {
                 System.out.println("Ready to receive ...");
