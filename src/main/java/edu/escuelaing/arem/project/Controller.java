@@ -13,9 +13,10 @@ public class Controller
         System.out.println( "Welcome to my App!" );
         try {
 			AppServer.init();
-			//AppServer.listen();
+			AppServer.listen();
 		} catch (IOException e) {
-			System.out.println("The server could not initialize correctly.");
+			System.err.println(e.toString());
+			System.out.println("It has occurred an error!.");
 		}
     }
 }

@@ -1,9 +1,6 @@
 package edu.escuelaing.arem.project;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import edu.escuelaing.arem.project.notation.Web;
 
 public class UrlHandler implements Handler{
 	
@@ -13,12 +10,11 @@ public class UrlHandler implements Handler{
 		this.method = method;
 	}
 
-	@Override
-	public String process(){
+	public String process() {
 		String error;
 		try {
 			return (String) method.invoke(null, null);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (Exception e) {
 			error = e.toString();
 			e.printStackTrace();
 			return error;
