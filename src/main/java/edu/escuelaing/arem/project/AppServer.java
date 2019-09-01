@@ -92,7 +92,7 @@ public class AppServer {
     	int end = inputLine.indexOf("HTTP")-1;
     	
     	String resource = inputLine.substring(begin, end);
-    	out.println("HTTP/2.0 200 OK");
+    	out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");
         out.println("\r\n");
         //System.err.println("What: " + resource);
@@ -110,7 +110,7 @@ public class AppServer {
         try {
             BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
             
-            out.println("HTTP/2.0 200 OK");
+            out.println("HTTP/1.1 200 OK");
             out.println("Content-Type: text/html");
             out.println("\r\n");
             while (readerFile.ready()) {
@@ -131,7 +131,7 @@ public class AppServer {
     	try {
     		String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\jpg\\" +urlInputLine;
             BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
-            out.println("HTTP/2.0 200 OK");
+            out.println("HTTP/1.1 200 OK");
             out.write("Content-Type: image/webp,*/*");
             out.println("\r\n");
             ImageIO.write(img, "jpg",clientSocket.getOutputStream());
