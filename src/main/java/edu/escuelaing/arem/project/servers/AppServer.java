@@ -49,8 +49,8 @@ public class AppServer {
 	public static void listen() throws Exception {
 		
 		
+
         while(true){
-        	
         	serverSocket = Server.startServer();
             clientSocket = Browser.startBroswer(serverSocket);
             
@@ -77,7 +77,7 @@ public class AppServer {
                     break;
                 }
             }
-            in.close();
+            //in.close();
             out.close();
             clientSocket.close();
 			serverSocket.close();

@@ -3,6 +3,7 @@ package edu.escuelaing.arem.project;
 import java.io.IOException;
 
 import edu.escuelaing.arem.project.servers.AppServer;
+import edu.escuelaing.arem.project.servers.Server;
 
 /**
  * Hello world!
@@ -14,6 +15,7 @@ public class Controller
     {
         System.out.println( "Welcome to my App!" );
         try {
+			
 			AppServer.init();
 			AppServer.listen();
 		} catch (Exception e) {

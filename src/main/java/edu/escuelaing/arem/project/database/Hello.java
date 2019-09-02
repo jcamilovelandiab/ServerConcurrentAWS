@@ -5,7 +5,7 @@ import edu.escuelaing.arem.project.notation.Web;
 public class Hello {
 
 	@Web(url="hello")
-	public static String test() {
+	public static String hello() {
 		return "Hey!. This is the Hello class";
 	}
 	
