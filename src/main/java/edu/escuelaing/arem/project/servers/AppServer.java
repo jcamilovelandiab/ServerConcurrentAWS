@@ -48,10 +48,11 @@ public class AppServer {
 	
 	public static void listen() throws Exception {
 		
-		
+		//serverSocket = Server.startServer();
 
         while(true){
-        	serverSocket = Server.startServer();
+			
+			serverSocket = Server.startServer();
             clientSocket = Browser.startBroswer(serverSocket);
             
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -61,11 +62,11 @@ public class AppServer {
             while ((inputLine = in.readLine()) != null) {
             	System.err.println("RECEIVED:["+inputLine +"]");
             	if(inputLine.contains("GET")) {
-            		String address = inputLine.split(" ")[1];
+					String address = inputLine.split(" ")[1];
             		if(address.contains("/apps/")) {
                     	sendAPP(address, out);
                     }else if(address.contains("/resources/")) {
-                    	String resource = address.substring("/resources/".length());
+						String resource = address.substring("/resources/".length());
     	                if (resource.contains(".html")) {
     	                	sendHTML(resource, out);
     	                }else if(resource.contains(".jpg")){
@@ -92,14 +93,9 @@ public class AppServer {
         out.println(listUrl.get(resource).process());
 	}
 	
-	public static void sendHTML(String inputLine, PrintWriter out) {
-		int end = inputLine.indexOf(".html");
-    	int begin = end-1;
-    	while(begin>=0 && inputLine.charAt(begin)!='/') {
-    		begin--;
-    	}
-    	String urlInputLine = inputLine.substring(begin+1,end+5);
-        String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\html\\" + urlInputLine;
+	public static void sendHTML(String resource, PrintWriter out) {
+		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/html/" + resource;
+		//System.err.println("URL DIRECTORY:["+urlDirectoryServer+"]");
         try {
             BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
 			String header = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
@@ -107,20 +103,16 @@ public class AppServer {
             while (readerFile.ready()) {
                 out.println(readerFile.readLine());
 			}
-            //readerFile.close();
+            readerFile.close();
         }catch (Exception e) {
             System.err.println("ERROR: Could not read the HTML file");
         }
 	}
 	
-	public static void sendJPG(String inputLine, Socket clientSocket, PrintWriter out) {
-		int end = inputLine.indexOf(".jpg");
-    	int begin = end-1;
-    	while(begin>=0 && inputLine.charAt(begin--)!='/');
-    	String urlInputLine = inputLine.substring(begin+1,end+4);
+	public static void sendJPG(String resource, Socket clientSocket, PrintWriter out) {
     	try {
-    		String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\jpg\\" +urlInputLine;
-            BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
+    		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/jpg/" +resource;
+			BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
             out.println("HTTP/1.1 200 OK\r");
             out.write("Content-Type: image/webp\r,*/*");
             out.println("\r\n");
