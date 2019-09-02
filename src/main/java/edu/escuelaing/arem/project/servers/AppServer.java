@@ -1,4 +1,4 @@
-package edu.escuelaing.arem.project;
+package edu.escuelaing.arem.project.servers;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -14,6 +14,8 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import edu.escuelaing.arem.project.Handler;
+import edu.escuelaing.arem.project.UrlHandler;
 import edu.escuelaing.arem.project.notation.Web;
 
 
@@ -44,42 +46,30 @@ public class AppServer {
         }
 	}
 	
-	public static void listen() throws IOException {
-		serverSocket = null;
-		int port = getPort();
-        try {
-            serverSocket = new ServerSocket(port);
-            System.err.println("Listening on port: "+port+".");
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: "+port+".");
-            System.exit(1);
-        }
- 
+	public static void listen() throws Exception {
+		
+		serverSocket = Server.startServer();
         while(true){
         	
-            clientSocket = null;
-            try {
-                System.out.println("Ready to receive ...");
-                clientSocket = serverSocket.accept();
-            } catch (IOException e) {
-                System.err.println("Accept failed.");
-                System.exit(1);
-            }
+        	
+            clientSocket = Browser.startBroswer(serverSocket);
             
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String inputLine;
             
             while ((inputLine = in.readLine()) != null) {
-            	//System.err.println("INPUTLINE:["+inputLine +"]");
-            	if(inputLine.contains("HTTP")) {
-            		if(inputLine.contains("/apps/")) {
-                    	sendAPP(inputLine, out);
-                    }else if(inputLine.contains("/resources/")) {
-    	                if (inputLine.contains(".html")) {
-    	                	sendHTML(inputLine, out);
-    	                }else if(inputLine.contains(".jpg")){
-    	                	sendJPG(inputLine, clientSocket, out);
+            	System.err.println("RECEIVED:["+inputLine +"]");
+            	if(inputLine.contains("GET")) {
+            		String address = inputLine.split(" ")[1];
+            		if(address.contains("/apps/")) {
+                    	sendAPP(address, out);
+                    }else if(address.contains("/resources/")) {
+                    	String resource = address.substring("/resources/".length());
+    	                if (resource.contains(".html")) {
+    	                	sendHTML(resource, out);
+    	                }else if(resource.contains(".jpg")){
+    	                	sendJPG(resource, clientSocket, out);
     	                }
                     }
             	}
@@ -94,11 +84,7 @@ public class AppServer {
         //serverSocket.close();
     }
 	
-	public static void sendAPP(String inputLine, PrintWriter out) {
-		int begin = inputLine.indexOf("/apps/");
-    	int end = inputLine.indexOf("HTTP")-1;
-    	System.err.println("BEGIN: "+begin+" , END: "+end);
-    	String resource = inputLine.substring(begin, end);
+	public static void sendAPP(String resource, PrintWriter out) {
     	out.println("HTTP/1.1 200 OK");
         out.println("Content-Type: text/html");
         out.println("\r\n");
@@ -148,11 +134,6 @@ public class AppServer {
     	}
 	}
 	
-	public static int getPort() {
-        if (System.getenv("PORT") != null) {
-            return Integer.parseInt(System.getenv("PORT"));
-        }
-        return 4567; //returns default port if heroku-port isn't set (i.e. on localhost)
-    }
+	
 
 }
