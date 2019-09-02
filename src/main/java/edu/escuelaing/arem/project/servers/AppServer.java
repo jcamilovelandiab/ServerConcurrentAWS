@@ -48,10 +48,10 @@ public class AppServer {
 	
 	public static void listen() throws Exception {
 		
-		serverSocket = Server.startServer();
+		
         while(true){
         	
-        	
+        	serverSocket = Server.startServer();
             clientSocket = Browser.startBroswer(serverSocket);
             
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -80,13 +80,13 @@ public class AppServer {
             in.close();
             out.close();
             clientSocket.close();
+			serverSocket.close();
         }
-        //serverSocket.close();
     }
 	
 	public static void sendAPP(String resource, PrintWriter out) {
-    	out.println("HTTP/1.1 200 OK");
-        out.println("Content-Type: text/html");
+    	out.println("HTTP/1.1 200 OK\r");
+        out.println("Content-Type: text/html\r");
         out.println("\r\n");
         //System.err.println("What: " + resource);
         out.println(listUrl.get(resource).process());
@@ -102,9 +102,8 @@ public class AppServer {
         String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\html\\" + urlInputLine;
         try {
             BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
-            
-            out.println("HTTP/1.1 200 OK");
-            out.println("Content-Type: text/html");
+            out.println("HTTP/1.1 200 OK\r");
+            out.println("Content-Type: text/html\r");
             out.println("\r\n");
             while (readerFile.ready()) {
                 out.println(readerFile.readLine());
@@ -125,8 +124,8 @@ public class AppServer {
     	try {
     		String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\jpg\\" +urlInputLine;
             BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
-            out.println("HTTP/1.1 200 OK");
-            out.write("Content-Type: image/webp,*/*");
+            out.println("HTTP/1.1 200 OK\r");
+            out.write("Content-Type: image/webp\r,*/*");
             out.println("\r\n");
             ImageIO.write(img, "jpg",clientSocket.getOutputStream());
     	}catch(Exception e) {
