@@ -14,7 +14,7 @@ public class Browser {
 	        System.out.println("Ready to receive ...");
 	        browser = server.accept();
 	    } catch (IOException e) {
-	        System.err.println("Accept failed.");
+	        System.err.println("ERROR: Accept failed.");
 	        System.exit(1);
 	    }
 		return browser;

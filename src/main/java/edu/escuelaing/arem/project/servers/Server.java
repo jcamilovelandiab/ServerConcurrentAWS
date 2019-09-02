@@ -14,7 +14,7 @@ public class Server {
             serverSocket = new ServerSocket(port);
             System.err.println("Listening on port: "+port+".");
         } catch (IOException e) {
-            System.err.println("Could not listen on port: "+port+".");
+            System.err.println("ERROR: Could not listen on port: "+port+".");
             System.exit(1);
         }
 		return serverSocket;

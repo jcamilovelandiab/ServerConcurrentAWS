@@ -20,7 +20,7 @@ public class Controller
 			AppServer.listen();
 		} catch (Exception e) {
 			System.err.println(e.toString());
-			System.out.println("It has occurred an error!.");
+			System.out.println("ERROR: It has occurred an error!.");
 		}
     }
 }

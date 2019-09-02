@@ -107,11 +107,9 @@ public class AppServer {
             while (readerFile.ready()) {
                 out.println(readerFile.readLine());
 			}
-            readerFile.close();
+            //readerFile.close();
         }catch (Exception e) {
-            //out.println("HTTP/2.0 404 Not found.");
-            //out.println("Content-Type: text/html");
-            //out.println("\r\n");
+            System.err.println("ERROR: Could not read the HTML file");
         }
 	}
 	
@@ -128,7 +126,7 @@ public class AppServer {
             out.println("\r\n");
             ImageIO.write(img, "jpg",clientSocket.getOutputStream());
     	}catch(Exception e) {
-    		//System.err.println("I CANT READ "+inputLine);
+			System.err.println("ERROR: Could not read the JPG image");
     	}
 	}
 	
