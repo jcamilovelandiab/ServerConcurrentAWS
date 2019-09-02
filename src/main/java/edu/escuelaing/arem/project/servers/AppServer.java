@@ -102,12 +102,11 @@ public class AppServer {
         String urlDirectoryServer = System.getProperty("user.dir") + "\\resources\\html\\" + urlInputLine;
         try {
             BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
-            out.println("HTTP/1.1 200 OK\r");
-            out.println("Content-Type: text/html\r");
-            out.println("\r\n");
+			String header = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
+			out.println(header);
             while (readerFile.ready()) {
                 out.println(readerFile.readLine());
-            }
+			}
             readerFile.close();
         }catch (Exception e) {
             //out.println("HTTP/2.0 404 Not found.");
