@@ -2,6 +2,8 @@ package edu.escuelaing.arem.project.servers;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -113,10 +115,21 @@ public class AppServer {
     	try {
     		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/jpg/" +resource;
 			BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
-            out.println("HTTP/1.1 200 OK\r");
-            out.write("Content-Type: image/webp\r,*/*");
-            out.println("\r\n");
-            ImageIO.write(img, "jpg",clientSocket.getOutputStream());
+
+			ByteArrayOutputStream arrayOutputBytes = new ByteArrayOutputStream();
+			ImageIO.write(img, "jpg", arrayOutputBytes);
+			byte [] arrayBytes = arrayOutputBytes.toByteArray();
+			DataOutputStream outImgBytes = new DataOutputStream(clientSocket.getOutputStream());
+
+			outImgBytes.writeBytes("HTTP/1.1 200 OK \r\n");
+			outImgBytes.writeBytes("Content-Type: image/jpg\r\n");
+			outImgBytes.writeBytes("Content-Length: " + arrayBytes.length);
+			outImgBytes.writeBytes("\r\n\r\n");
+			outImgBytes.write(arrayBytes);
+			outImgBytes.close();
+
+			out.println(outImgBytes.toString());
+
     	}catch(Exception e) {
 			System.err.println("ERROR: Could not read the JPG image");
     	}
