@@ -80,19 +80,27 @@ public class AppServer {
                     break;
                 }
             }
-            //in.close();
+            in.close();
             out.close();
             clientSocket.close();
 			serverSocket.close();
         }
     }
 	
-	public static void sendAPP(String resource, PrintWriter out) {
+	public static void sendAPP(String inputLine, PrintWriter out) {
+		String[] arr = inputLine.split("?");
+		String address = "";
+		if(arr.length > 1){
+			String className = arr[0];
+		}else{
+			address = arr[0];
+		}
+
     	out.println("HTTP/1.1 200 OK\r");
         out.println("Content-Type: text/html\r");
         out.println("\r\n");
         //System.err.println("What: " + resource);
-        out.println(listUrl.get(resource).process());
+        out.println(listUrl.get(address).process());
 	}
 	
 	public static void sendHTML(String resource, PrintWriter out) {
@@ -134,7 +142,4 @@ public class AppServer {
 			System.err.println("ERROR: Could not read the JPG image");
     	}
 	}
-	
-	
-
 }

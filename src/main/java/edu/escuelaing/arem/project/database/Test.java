@@ -8,5 +8,10 @@ public class Test {
 	public static String test() {
 		return "Hey!. This is the test class";
 	}
+
+	@Web(url="sum")
+	public static Integer sum(String numberA, String numberB){
+		return Integer.parseInt(numberA)+Integer.parseInt(numberB);
+	}
 	
 }
