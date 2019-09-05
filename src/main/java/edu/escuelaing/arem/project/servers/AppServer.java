@@ -20,7 +20,11 @@ import edu.escuelaing.arem.project.UrlHandler;
 import edu.escuelaing.arem.project.notation.Web;
 import edu.escuelaing.arem.project.Handler;;
 
-
+/**
+ * This is a class that has a client(browser) and a server
+ * that listens constantly on a port, and it has list of urls.
+ * @author Juan Camilo Velandia Botello
+ */
 public class AppServer {
 
 	private static HashMap<String, Handler> listUrl = new HashMap<String, Handler>();
@@ -56,9 +60,11 @@ public class AppServer {
         }
 	}
 	
+	/**
+	 * This method listens, receives, and processes the requests from the browser.
+	 * @throws Exception
+	 */
 	public static void listen() throws Exception {
-		
-		//serverSocket = Server.startServer();
 
         while(true){
 			
@@ -95,6 +101,11 @@ public class AppServer {
         }
     }
 	
+	/**
+	 * This method sends the requested class to the browser.
+	 * @param address this is the class' address that the browser wants.
+	 * @param out this is the printwritter, and it sends information to the browser.
+	 */
 	public static void sendAPP(String address, PrintWriter out) {
 		String[] params = null; String className;
 		if(address.matches("[a-z/]+[?]{1}[a-zA-Z0-9=&]+")){
@@ -113,6 +124,11 @@ public class AppServer {
         out.println(listUrl.get(className).process(params));
 	}
 
+	/**
+	 * This method sends the requested html file to the browser.
+	 * @param resource this is the file with html extension that the browser wants.
+	 * @param out this is the printwritter, and it sends information to the browser.
+	 */
 	public static void sendHTML(String resource, PrintWriter out) {
 		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/html/" + resource;
 		try {
@@ -128,6 +144,12 @@ public class AppServer {
         }
 	}
 	
+	/**
+	 * This method sends the requested image to the browser.
+	 * @param resource this is the image with jpg extension that the browser wants.
+	 * @param clientSocket this is the brower's socket
+	 * @param out this is the printwritter, and it sends information to the browser.
+	 */
 	public static void sendJPG(String resource, Socket clientSocket, PrintWriter out) {
     	try {
     		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/jpg/" +resource;

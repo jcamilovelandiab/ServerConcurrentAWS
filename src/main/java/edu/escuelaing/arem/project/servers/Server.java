@@ -3,6 +3,10 @@ package edu.escuelaing.arem.project.servers;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+/**
+ * This is the server class which has a ServerSocket and a port as attributes.
+ * @author Juan Camilo Velandia Botello
+ */
 public class Server {
 
     public static ServerSocket serverSocket = null;

@@ -1,6 +1,7 @@
 package edu.escuelaing.arem.project;
 
 /**
+ * This is an interface to execute a method.
  * @author Juan Camilo Velandia Botello
  */
 public interface Handler {
