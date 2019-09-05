@@ -10,8 +10,9 @@ public class Test {
 	}
 
 	@Web(url="sum")
-	public static Integer sum(String numberA, String numberB){
-		return Integer.parseInt(numberA)+Integer.parseInt(numberB);
+	public static String sum(String numberA, String numberB){
+		Integer result = Integer.parseInt(numberA)+Integer.parseInt(numberB);
+		return "The result of the sum is : "+String.valueOf(result);
 	}
 	
 }

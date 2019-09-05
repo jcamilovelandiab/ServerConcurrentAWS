@@ -32,7 +32,7 @@ public class AppServer {
 		try {
 			load("edu.escuelaing.arem.project.database.Test");
 			load("edu.escuelaing.arem.project.database.Hello");
-			System.out.println(listUrl.toString());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,7 +62,7 @@ public class AppServer {
             String inputLine;
             
             while ((inputLine = in.readLine()) != null) {
-            	System.err.println("RECEIVED:["+inputLine +"]");
+				//System.err.println("RECEIVED:["+inputLine+"]");
             	if(inputLine.contains("GET")) {
 					String address = inputLine.split(" ")[1];
             		if(address.contains("/apps/")) {
@@ -87,26 +87,27 @@ public class AppServer {
         }
     }
 	
-	public static void sendAPP(String inputLine, PrintWriter out) {
-		String[] arr = inputLine.split("?");
-		String address = "";
-		if(arr.length > 1){
-			String className = arr[0];
+	public static void sendAPP(String address, PrintWriter out) {
+		String[] params = null; String className;
+		if(address.matches("[a-z/]+[?]{1}[a-zA-Z0-9=&]+")){
+			String[] arr = address.split("\\?");
+			className = arr[0];
+			params = (arr[1].contains("&")) ? arr[1].split("&") : new String[]{arr[1]};
+			for(int i=0; i<params.length; i++){
+				params[i] = params[i].split("=")[1];
+			}
 		}else{
-			address = arr[0];
+			className = address;
 		}
-
-    	out.println("HTTP/1.1 200 OK\r");
+		out.println("HTTP/1.1 200 OK\r");
         out.println("Content-Type: text/html\r");
-        out.println("\r\n");
-        //System.err.println("What: " + resource);
-        out.println(listUrl.get(address).process());
+        out.println("\r\n");	
+        out.println(listUrl.get(className).process(params));
 	}
-	
+
 	public static void sendHTML(String resource, PrintWriter out) {
 		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/html/" + resource;
-		//System.err.println("URL DIRECTORY:["+urlDirectoryServer+"]");
-        try {
+		try {
             BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
 			String header = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
 			out.println(header);

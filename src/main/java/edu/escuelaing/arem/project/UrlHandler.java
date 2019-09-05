@@ -10,10 +10,10 @@ public class UrlHandler implements Handler{
 		this.method = method;
 	}
 
-	public String process() {
+	public String process(String[] params) {
 		String error;
 		try {
-			return (String) method.invoke(null, null);
+			return (String) method.invoke(null,params);
 		} catch (Exception e) {
 			error = e.toString();
 			e.printStackTrace();

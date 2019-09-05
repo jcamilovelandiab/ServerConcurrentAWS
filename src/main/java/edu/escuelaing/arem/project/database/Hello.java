@@ -9,9 +9,9 @@ public class Hello {
 		return "Hey!. This is the Hello class";
 	}
 	
-	@Web(url="helloSr")
-	public static String helloGivenName(String name){
-		return "Welcome "+name+"!!! This is the Hello class";
+	@Web(url="hellofriend")
+	public static String hello(String name){
+		return "Welcome "+name+"!!!. This is the Hello class";
 	}
 
 }
