@@ -1,13 +1,10 @@
 package edu.escuelaing.arem.project;
 
-import java.io.IOException;
-
 import edu.escuelaing.arem.project.servers.AppServer;
 
 
 /**
- * Hello world!
- *
+ *	This is the App Controller that initializes a server, and then the server starts to listen on a port.
  */
 public class Controller 
 {
@@ -15,7 +12,6 @@ public class Controller
     {
         System.out.println( "Welcome to my App!" );
         try {
-			
 			AppServer.init();
 			AppServer.listen();
 		} catch (Exception e) {

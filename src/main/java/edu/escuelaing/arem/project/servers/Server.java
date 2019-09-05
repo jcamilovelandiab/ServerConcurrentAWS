@@ -5,13 +5,16 @@ import java.net.ServerSocket;
 
 public class Server {
 
-	public static ServerSocket serverSocket = null;
-	
+    public static ServerSocket serverSocket = null;
+    public static int port;
+
+    /**
+     * @return A server that listens on a port.
+     */
 	public static ServerSocket startServer() {
 		serverSocket = null;
-		int port = getPort();
         try {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(getPort());
             System.err.println("Listening on port: "+port+".");
         } catch (IOException e) {
             System.err.println("ERROR: Could not listen on port: "+port+".");
@@ -19,12 +22,15 @@ public class Server {
         }
 		return serverSocket;
 	}
-	
+    
+    /**
+     * @return The port on which the server will listen.
+     */
 	public static int getPort() {
         if (System.getenv("PORT") != null) {
-            return Integer.parseInt(System.getenv("PORT"));
+            return port=Integer.parseInt(System.getenv("PORT"));
         }
-        return 4567; //returns default port if heroku-port isn't set (i.e. on localhost)
+        return port=4567; //returns default port if heroku-port isn't set (i.e. on localhost)
     }
 	
 }

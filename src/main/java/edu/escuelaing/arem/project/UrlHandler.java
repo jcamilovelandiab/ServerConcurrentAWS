@@ -6,6 +6,10 @@ public class UrlHandler implements Handler{
 	
 	private Method method;
 
+	/**
+	 * UrlHandler Constructor
+	 * @param method This is the method to execute.
+	 */
 	public UrlHandler(Method method) {
 		this.method = method;
 	}

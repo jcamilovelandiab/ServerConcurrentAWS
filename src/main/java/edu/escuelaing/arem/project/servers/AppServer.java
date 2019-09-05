@@ -16,9 +16,9 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import edu.escuelaing.arem.project.Handler;
 import edu.escuelaing.arem.project.UrlHandler;
 import edu.escuelaing.arem.project.notation.Web;
+import edu.escuelaing.arem.project.Handler;;
 
 
 public class AppServer {
@@ -27,7 +27,10 @@ public class AppServer {
 	private static Socket clientSocket = null;
 	private static ServerSocket serverSocket = null;
 	
-	
+	/**
+	 * Initializes a server with two classes
+	 * @throws IOException
+	 */
 	public static void init() throws IOException {
 		try {
 			load("edu.escuelaing.arem.project.database.Test");
@@ -38,6 +41,11 @@ public class AppServer {
 		}
 	}
 	
+	/**
+	 * Uploads a class to our url list
+	 * @param classpath
+	 * @throws ClassNotFoundException
+	 */
 	public static void load(String classpath) throws ClassNotFoundException {
 		Class<?> c = Class.forName(classpath);
 		for(Method m : c.getMethods()){

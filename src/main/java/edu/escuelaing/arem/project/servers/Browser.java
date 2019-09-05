@@ -8,6 +8,10 @@ public class Browser {
 
 	public static Socket browser;
 	
+	/**
+	 * @param server The server which will connect to the client(browser)
+	 * @return A socket (The browser).
+	 */
 	public static Socket startBroswer(ServerSocket server) {
 		browser = null;
 	    try {
