@@ -40,7 +40,7 @@ The web application is deployed in heroku. To visit the website go to the follow
 
 In this tests the heroku URL was used. If you want to test the project locally you can use localhost:4567/apps/hello, otherwise https://first-arem-project.herokuapp.com/apps/hello
 
-#### Requesting a java class.
+### Requesting a java class.
 
 * Testing the /apps/hello URL. The application executes the hello method, and the browser receives a message.
 
@@ -58,7 +58,7 @@ In this tests the heroku URL was used. If you want to test the project locally y
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/sum-testing.PNG)
 
-#### Requesting a html or jpg resource.
+### Requesting a html or jpg resource.
 
 * Searching the file github.html
 
@@ -72,7 +72,7 @@ In this tests the heroku URL was used. If you want to test the project locally y
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/githubjpg-testing.PNG)
 
-## Build with
+## Built with
 
 * [Maven](https://maven.apache.org/) - Dependency Management
 
