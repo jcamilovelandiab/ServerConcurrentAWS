@@ -32,7 +32,7 @@ To see the resource "hello" go to the browser and type the following url:
 http://localhost:4567/apps/hello
 ```
 
-## Deploying
+## Deployment
 
 The web application is deployed in heroku. To visit the website go to the following link. [first arem project](https://first-arem-project.herokuapp.com/apps/hello)
 
