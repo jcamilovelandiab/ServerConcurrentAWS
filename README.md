@@ -38,7 +38,7 @@ The web application is deployed in heroku. To visit the website go to the follow
 
 ## Testing
 
-In this tests the heroku URL was used. If you want to test the project locally you can use localhost:4567/, otherwise https://first-arem-project.herokuapp.com/
+In this tests the heroku URL was used. If you want to test the project locally you can use localhost:4567/apps/hello, otherwise https://first-arem-project.herokuapp.com/apps/hello
 
 ### Requesting a java class.
 
