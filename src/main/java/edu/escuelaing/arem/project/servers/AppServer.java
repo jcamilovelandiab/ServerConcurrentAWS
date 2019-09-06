@@ -39,7 +39,6 @@ public class AppServer {
 		try {
 			load("edu.escuelaing.arem.project.database.Test");
 			load("edu.escuelaing.arem.project.database.Hello");
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,22 +72,25 @@ public class AppServer {
             
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String inputLine;
-            
+			String inputLine;
+			
             while ((inputLine = in.readLine()) != null) {
-				//System.err.println("RECEIVED:["+inputLine+"]");
             	if(inputLine.contains("GET")) {
 					String address = inputLine.split(" ")[1];
-            		if(address.contains("/apps/")) {
-                    	sendAPP(address, out);
-                    }else if(address.contains("/resources/")) {
-						String resource = address.substring("/resources/".length());
-    	                if (resource.contains(".html")) {
-    	                	sendHTML(resource, out);
-    	                }else if(resource.contains(".jpg")){
-    	                	sendJPG(resource, clientSocket, out);
-    	                }
-                    }
+					try{
+						if(address.contains("/apps/")) {
+							sendAPP(address, out);
+						}else if(address.contains("/resources/")) {
+							String resource = address.substring("/resources/".length());
+							if (resource.contains(".html")) {
+								sendHTML(resource, out);
+							}else if(resource.contains(".jpg")){
+								sendJPG(resource, clientSocket, out);
+							}
+						}
+					}catch(Exception e){
+						sendNotFound(clientSocket,out);
+					}
             	}
                 if (!in.ready()) {
                     break;
@@ -105,8 +107,9 @@ public class AppServer {
 	 * This method sends the requested class to the browser.
 	 * @param address this is the class' address that the browser wants.
 	 * @param out this is the printwritter, and it sends information to the browser.
+	 * @throws Exception
 	 */
-	public static void sendAPP(String address, PrintWriter out) {
+	public static void sendAPP(String address, PrintWriter out) throws Exception {
 		String[] params = null; String className;
 		if(address.matches("[a-z/]+[?]{1}[a-zA-Z0-9=&]+")){
 			String[] arr = address.split("\\?");
@@ -118,30 +121,28 @@ public class AppServer {
 		}else{
 			className = address;
 		}
+		String result = listUrl.get(className).process(params);
 		out.println("HTTP/1.1 200 OK\r");
         out.println("Content-Type: text/html\r");
-        out.println("\r\n");	
-        out.println(listUrl.get(className).process(params));
+		out.println("\r\n");
+        out.println(result);
 	}
 
 	/**
 	 * This method sends the requested html file to the browser.
 	 * @param resource this is the file with html extension that the browser wants.
-	 * @param out this is the printwritter, and it sends information to the browser.
+	 * @param out this is the printwritter, and it sends information to thebrowser.
+	 * @throws IOException
 	 */
-	public static void sendHTML(String resource, PrintWriter out) {
+	public static void sendHTML(String resource, PrintWriter out) throws IOException {
 		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/html/" + resource;
-		try {
-            BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
-			String header = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
-			out.println(header);
-            while (readerFile.ready()) {
-                out.println(readerFile.readLine());
-			}
-            readerFile.close();
-        }catch (Exception e) {
-            System.err.println("ERROR: Could not read the HTML file");
-        }
+		BufferedReader readerFile = new BufferedReader(new InputStreamReader(new FileInputStream(urlDirectoryServer), "UTF8"));
+		String header = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
+		out.println(header);
+		while (readerFile.ready()) {
+			out.println(readerFile.readLine());
+		}
+		readerFile.close();
 	}
 	
 	/**
@@ -149,28 +150,45 @@ public class AppServer {
 	 * @param resource this is the image with jpg extension that the browser wants.
 	 * @param clientSocket this is the brower's socket
 	 * @param out this is the printwritter, and it sends information to the browser.
+	 * @throws IOException
 	 */
-	public static void sendJPG(String resource, Socket clientSocket, PrintWriter out) {
-    	try {
-    		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/jpg/" +resource;
-			BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
+	public static void sendJPG(String resource, Socket clientSocket, PrintWriter out) throws IOException {
+		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/jpg/" +resource;
+		BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
 
-			ByteArrayOutputStream arrayOutputBytes = new ByteArrayOutputStream();
-			ImageIO.write(img, "jpg", arrayOutputBytes);
-			byte [] arrayBytes = arrayOutputBytes.toByteArray();
-			DataOutputStream outImgBytes = new DataOutputStream(clientSocket.getOutputStream());
+		ByteArrayOutputStream arrayOutputBytes = new ByteArrayOutputStream();
+		ImageIO.write(img, "jpg", arrayOutputBytes);
+		byte [] arrayBytes = arrayOutputBytes.toByteArray();
+		DataOutputStream outImgBytes = new DataOutputStream(clientSocket.getOutputStream());
 
-			outImgBytes.writeBytes("HTTP/1.1 200 OK \r\n");
-			outImgBytes.writeBytes("Content-Type: image/jpg\r\n");
-			outImgBytes.writeBytes("Content-Length: " + arrayBytes.length);
-			outImgBytes.writeBytes("\r\n\r\n");
-			outImgBytes.write(arrayBytes);
-			outImgBytes.close();
+		outImgBytes.writeBytes("HTTP/1.1 200 OK \r\n");
+		outImgBytes.writeBytes("Content-Type: image/jpg\r\n");
+		outImgBytes.writeBytes("Content-Length: " + arrayBytes.length);
+		outImgBytes.writeBytes("\r\n\r\n");
+		outImgBytes.write(arrayBytes);
+		outImgBytes.close();
+		out.println(outImgBytes.toString());
+	}
 
-			out.println(outImgBytes.toString());
-
-    	}catch(Exception e) {
-			System.err.println("ERROR: Could not read the JPG image");
-    	}
+	/**
+	 * This method send an 404 (not found) error image.
+	 * @param clientSocket this is the brower's socket
+	 * @param out this is the printwritter, and it sends information to the browser.
+	 * @throws IOException
+	 */
+	public static void sendNotFound(Socket clientSocket, PrintWriter out) throws IOException {
+		String urlDirectoryServer = System.getProperty("user.dir") + "/resources/notfound.png";
+		BufferedImage img = ImageIO.read(new File(urlDirectoryServer));
+		ByteArrayOutputStream arrayOutputBytes = new ByteArrayOutputStream();
+		ImageIO.write(img, "png", arrayOutputBytes);
+		byte [] arrayBytes = arrayOutputBytes.toByteArray();
+		DataOutputStream outImgBytes = new DataOutputStream(clientSocket.getOutputStream());
+		outImgBytes.writeBytes("HTTP/1.1 200 OK \r\n");
+		outImgBytes.writeBytes("Content-Type: image/jpg\r\n");
+		outImgBytes.writeBytes("Content-Length: " + arrayBytes.length);
+		outImgBytes.writeBytes("\r\n\r\n");
+		outImgBytes.write(arrayBytes);
+		outImgBytes.close();
+		out.println(outImgBytes.toString());
 	}
 }
