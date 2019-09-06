@@ -43,33 +43,33 @@ In this tests the heroku URL was used. If you want to test the project locally y
 ### Requesting a java class.
 
 * Testing the /apps/hello URL. The application executes the hello method, and the browser receives a message.
-
+[/apps/hello](https://first-arem-project.herokuapp.com/apps/hello)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/hello-testing.PNG)
 
 * Testing the /apps/test URL. The application executes the test method, and the browser receives a message.
-
+[/apps/test](https://first-arem-project.herokuapp.com/apps/test)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/test-testing.PNG)
 
 * Testing the /apps/hellofriend URL with parameters. The URL receives the client's name.
-
+[/apps/hellofriend](https://first-arem-project.herokuapp.com/apps/hellofriend?name=camilo)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/hellofriend-testing.PNG)
 
 * Testing the /apps/sum URL with parameters. The URL receives two numbers, and the server returns the sum of those numbers.
-
+[/apps/sum](https://first-arem-project.herokuapp.com/apps/sum?a=5&b=6)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/sum-testing.PNG)
 
 ### Requesting a html or jpg resource.
 
 * Searching the file github.html
-
+[/resources/github.html](https://first-arem-project.herokuapp.com/resources/github.html)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/githubhtml-testing.PNG)
 
 * Searching the file escuelaing.jpg
-
+[/resources/escuela.jpg](https://first-arem-project.herokuapp.com/resources/escuela.jpg)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/escuelaingjpg-testing.PNG)
 
 * Searching the file github.jpg
-
+[/resources/github.jpg](https://first-arem-project.herokuapp.com/resources/github.jpg)
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/githubjpg-testing.PNG)
 
 ## Built with
