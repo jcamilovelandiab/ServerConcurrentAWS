@@ -4,7 +4,7 @@ A Web server (Apache type) was implemented in Java. The server is able to delive
 
 ## Heroku
 
-The web application is deployed in heroku. To visit the website go to the following link. [SparkWeb Calculator](https://sparklab2.herokuapp.com/inputdata "Heroku Page")
+The web application is deployed in heroku. To visit the website go to the following link. [first arem project](https://first-arem-project.herokuapp.com/apps/hello)
 
 ## Prerrequisites
 
