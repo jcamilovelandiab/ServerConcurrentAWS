@@ -18,7 +18,12 @@ import javax.imageio.ImageIO;
 
 import edu.escuelaing.arem.project.UrlHandler;
 import edu.escuelaing.arem.project.notation.Web;
-import edu.escuelaing.arem.project.Handler;;
+import edu.escuelaing.arem.project.Handler;
+
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import java.util.Set;
+
 
 /**
  * This is a class that has a client(browser) and a server
@@ -37,8 +42,7 @@ public class AppServer {
 	 */
 	public static void init() throws IOException {
 		try {
-			load("edu.escuelaing.arem.project.database.Test");
-			load("edu.escuelaing.arem.project.database.Hello");
+			loadClasses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,14 +53,20 @@ public class AppServer {
 	 * @param classpath
 	 * @throws ClassNotFoundException
 	 */
-	public static void load(String classpath) throws ClassNotFoundException {
-		Class<?> c = Class.forName(classpath);
-		for(Method m : c.getMethods()){
-            if(m.isAnnotationPresent(Web.class)){
-            	Handler handler = new UrlHandler(m);
-                listUrl.put("/apps/"+m.getAnnotation(Web.class).url(), handler);
+	public static void loadClasses() throws ClassNotFoundException {
+		
+		Reflections reflections = new Reflections("edu.escuelaing.arem.project.database", new SubTypesScanner(false));
+        Set<Class<? extends Object>> allClasses = reflections.getSubTypesOf(Object.class);
+
+        for (Class clase : allClasses) {
+            for (Method m : clase.getMethods()) {
+                if(m.isAnnotationPresent(Web.class)){
+					Handler handler = new UrlHandler(m);
+					listUrl.put("/apps/"+m.getAnnotation(Web.class).url(), handler);
+				}
             }
         }
+
 	}
 	
 	/**
@@ -191,4 +201,5 @@ public class AppServer {
 		outImgBytes.close();
 		out.println(outImgBytes.toString());
 	}
+
 }

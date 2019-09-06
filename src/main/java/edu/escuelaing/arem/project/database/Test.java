@@ -13,7 +13,15 @@ public class Test {
 	 */
 	@Web(url="test")
 	public static String test() {
-		return "Hey!. This is the test class";
+		String form="<form action=\"/apps/sum\">\r\n"
+					+ "If you want to sum two values enter the numbers!!:<br>\r\n"
+					+ "<input type=\"text\" name=\"numberA\" value=\"0\">\r\n"
+					+ "<br>\r\n"
+					+ "<input type=\"text\" name=\"numberB\" value=\"0\">\r\n"
+					+ "<br>\r\n"
+					+ "<input type=\"submit\" value=\"Submit\">"
+					+"</form>\r\n";
+		return "Hey!. This is the test class"+form;
 	}
 
 	/**

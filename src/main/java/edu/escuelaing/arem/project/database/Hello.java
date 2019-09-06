@@ -13,7 +13,13 @@ public class Hello {
 	 */
 	@Web(url="hello")
 	public static String hello() {
-		return "Hey!. This is the Hello class";
+		String form="<form action=\"/apps/hellofriend\">\r\n"
+					+ "Enter your name:<br>\r\n"
+					+ "<input type=\"text\" name=\"name\" value=\"camilo\">\r\n"
+					+ "<br>\r\n"
+					+ "<input type=\"submit\" value=\"Submit\">"
+					+"</form>\r\n";
+		return "Hey!. This is the Hello class\r\n"+form;
 	}
 	
 	/**
