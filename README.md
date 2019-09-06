@@ -40,35 +40,35 @@ The web application is deployed in heroku. To visit the website go to the follow
 
 In this tests the heroku URL was used. If you want to test the project locally you can use localhost:4567/apps/hello, otherwise https://first-arem-project.herokuapp.com/apps/hello
 
-### Requesting a java class.
+#### Requesting a java class.
 
-Testing the /apps/hello URL. The application executes the hello method, and the browser receives a message.
+* Testing the /apps/hello URL. The application executes the hello method, and the browser receives a message.
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/hello-testing.PNG)
 
-Testing the /apps/test URL. The application executes the test method, and the browser receives a message.
+* Testing the /apps/test URL. The application executes the test method, and the browser receives a message.
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/test-testing.PNG)
 
-Testing the /apps/hellofriend URL with parameters. The URL receives the client's name.
+* Testing the /apps/hellofriend URL with parameters. The URL receives the client's name.
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/hellofriend-testing.PNG)
 
-Testing the /apps/sum URL with parameters. The URL receives two numbers, and the server returns the sum of those numbers.
+* Testing the /apps/sum URL with parameters. The URL receives two numbers, and the server returns the sum of those numbers.
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/sum-testing.PNG)
 
-### Requesting a html or jpg resource.
+#### Requesting a html or jpg resource.
 
-Searching the file github.html
+* Searching the file github.html
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/githubhtml-testing.PNG)
 
-Searching the file escuelaing.jpg
+* Searching the file escuelaing.jpg
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/escuelaingjpg-testing.PNG)
 
-Searching the file github.jpg
+* Searching the file github.jpg
 
 ![](https://github.com/jcamilovelandiab/first-arem-project/blob/master/images/githubjpg-testing.PNG)
 
