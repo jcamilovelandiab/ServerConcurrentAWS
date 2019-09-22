@@ -1,6 +1,6 @@
-# First AREM Project
+# Server Concurrent on AWS
 
-A Web server (Apache type) was implemented in Java. The server is able to deliver html pages and jpg images, and it is also able to search for requested resources such as java classes and receive parameters. The server attends multiple non-concurrent requests.
+A Web concurrent server (Apache type) was implemented in Java. The server is able to deliver html pages and jpg images, and it is also able to search for requested resources such as java classes and receive parameters. The server attends multiple concurrent requests.
 
 ## Prerrequisites
 
@@ -10,7 +10,7 @@ If you want to download and run the source code, it is necessary to have install
 
 Execute this line to clone the project.
 ```
-git clone https://github.com/jcamilovelandiab/first-arem-projec
+git clone https://github.com/jcamilovelandiab/ServerConcurrentAWS
 ```
 
 To download the project dependencies the following line must be executed.
@@ -35,6 +35,7 @@ http://localhost:4567/apps/hello
 ## Deployment
 
 The web application is deployed in heroku. To visit the website go to the following link. [first arem project](https://first-arem-project.herokuapp.com/apps/hello)
+The concurrent server is located in a linux virtual machine on AWS
 
 ## Testing
 
