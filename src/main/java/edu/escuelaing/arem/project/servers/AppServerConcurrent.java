@@ -24,26 +24,39 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import java.util.Set;
 
-
 /**
- * This is a class that has a client(browser) and a server
- * that listens constantly on a port, and it has list of urls.
+ * This is a class that has a client(browser) and a server that listens
+ * constantly on a port, and it has list of urls.
+ * 
  * @author Juan Camilo Velandia Botello
  */
-public class AppServer {
+public class AppServerConcurrent implements Runnable {
 
 	private static HashMap<String, Handler> listUrl = new HashMap<String, Handler>();
-	private static Socket clientSocket = null;
-	private static ServerSocket serverSocket = null;
-	
+	private Socket clientSocket = null;
+
+	public AppServerConcurrent(Socket client){
+		this.clientSocket = client;
+	}
+
+	@Override
+	public void run() {
+		try {
+			listen();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	/**
 	 * Initializes a server with two classes
 	 * @throws IOException
 	 */
-	public static void init() throws IOException {
+	public static void init() {
 		try {
 			loadClasses();
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -73,44 +86,37 @@ public class AppServer {
 	 * This method listens, receives, and processes the requests from the browser.
 	 * @throws Exception
 	 */
-	public static void listen() throws Exception {
-
-        while(true){
-			
-			serverSocket = Server.startServer();
-            clientSocket = Browser.startBroswer(serverSocket);
-            
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			String inputLine;
-			
-            while ((inputLine = in.readLine()) != null) {
-            	if(inputLine.contains("GET")) {
-					String address = inputLine.split(" ")[1];
-					try{
-						if(address.contains("/apps/")) {
-							sendAPP(address, out);
-						}else if(address.contains("/resources/")) {
-							String resource = address.substring("/resources/".length());
-							if (resource.contains(".html")) {
-								sendHTML(resource, out);
-							}else if(resource.contains(".jpg")){
-								sendJPG(resource, clientSocket, out);
-							}
+	private void listen() throws Exception {
+		
+		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		String inputLine;
+		
+		while ((inputLine = in.readLine()) != null) {
+			if(inputLine.contains("GET")) {
+				String address = inputLine.split(" ")[1];
+				try{
+					if(address.contains("/apps/")) {
+						sendAPP(address, out);
+					}else if(address.contains("/resources/")) {
+						String resource = address.substring("/resources/".length());
+						if (resource.contains(".html")) {
+							sendHTML(resource, out);
+						}else if(resource.contains(".jpg")){
+							sendJPG(resource, clientSocket, out);
 						}
-					}catch(Exception e){
-						sendNotFound(clientSocket,out);
 					}
-            	}
-                if (!in.ready()) {
-                    break;
-                }
-            }
-            in.close();
-            out.close();
-            clientSocket.close();
-			serverSocket.close();
-        }
+				}catch(Exception e){
+					sendNotFound(clientSocket,out);
+				}
+			}
+			if (!in.ready()) {
+				break;
+			}
+		}
+		in.close();
+		out.close();
+		clientSocket.close();
     }
 	
 	/**

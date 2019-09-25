@@ -16,7 +16,7 @@ public class Browser {
 	 * @param server The server which will connect to the client(browser)
 	 * @return A socket (the browser).
 	 */
-	public static Socket startBroswer(ServerSocket server) {
+	public static Socket startBrowser(ServerSocket server) {
 		browser = null;
 	    try {
 	        System.out.println("Ready to receive ...");
